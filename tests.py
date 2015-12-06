@@ -19,6 +19,12 @@ class RiskTestCase(unittest.TestCase):
       response = self.app.get('/risk/1001')
     except Exception:
       assert True
+ 
+  def test_risk_endpoint_too_low(self):
+    try:
+      response = self.app.get('/risk/9')
+    except Exception:
+      assert True
 
 if __name__ == '__main__':
   unittest.main()

@@ -10,7 +10,8 @@ from invalid_usage import InvalidUsage
 #from two1.lib.bitserv.flask import Payment
 
 PORT = 5000
-MAX_RISK_AMOUNT = 10000
+MAX_RISK_AMOUNT = 1000
+MIN_RISK_AMOUNT = 10
 
 # Configure the app
 app = Flask(__name__)
@@ -22,6 +23,10 @@ def risk(risk_amount):
 
   if risk_amount > MAX_RISK_AMOUNT:
     error_string = 'Risk amount must be less than {:d}'.format(MAX_RISK_AMOUNT)
+    raise InvalidUsage(error_string, status_code=400)
+
+  if risk_amount < MIN_RISK_AMOUNT:
+    error_string = 'Risk amount must be more than {:d}'.format(MIN_RISK_AMOUNT)
     raise InvalidUsage(error_string, status_code=400)
 
   return '{:d}'.format(risk_amount)
