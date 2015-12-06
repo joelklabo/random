@@ -1,0 +1,2 @@
+# random
+Risk your satoshis
