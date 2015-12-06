@@ -14,7 +14,7 @@ class RiskEngineTestCase(unittest.TestCase):
         payout_count += 1  
     payout_percentage = float(payout_count)/float(n)
     print(payout_percentage)
-    assert (payout_percentage > 0.0 and payout_percentage <= 0.49)
+    assert (payout_percentage > 0.0 and payout_percentage <= 0.499)
     
 if __name__ == '__main__':
   unittest.main()
