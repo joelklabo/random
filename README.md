@@ -1,2 +1,2 @@
-# random
+# Risk
 Risk your satoshis
