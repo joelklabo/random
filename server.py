@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from flask import Flask
+from flask import Flask, jsonify
 from flask import request
 
 # Import from the 21 Bitcoin Develper Library
@@ -16,7 +16,7 @@ app = Flask(__name__)
 
 @app.route('/risk/<int:risk_amount>')
 def risk(risk_amount):
-  return 'you risked {:d}'.format(risk_amount)
+  return '{:d}'.format(risk_amount) 
 
 if __name__ == '__main__':
   app.run(host='0.0.0.0', port=PORT)
