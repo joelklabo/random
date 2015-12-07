@@ -60,7 +60,8 @@ def payment_required_response(amount):
   return resp
 
 def payment_server_address():
-  return 'http://{0}:{0}/payment'.format(zerotier.device_ip(), PORT) 
+  ip = zerotier.device_ip()[0]
+  return 'http://{0}:{1}/payment'.format(ip, PORT) 
 
 def bitcoin_transfer_dict(request):
   transfer = request.headers.get('Bitcoin-Transfer')
