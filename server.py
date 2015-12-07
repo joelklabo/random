@@ -63,7 +63,8 @@ def payment_server_address():
   return 'http://{0}:{0}/payment'.format(zerotier.device_ip(), PORT) 
 
 def bitcoin_transfer_dict(request):
-  transfer = request.headers['Bitcoin-Transfer']
+  if request.headers['Bitcoin-Transfer']:
+    request.headers['Bitcoin-Transfer']
 
 def winner_message(user, reward):
   return 'Congratulations {0} you won {0} satoshis!'.format(user, reward)
