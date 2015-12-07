@@ -25,29 +25,29 @@ payment = Payment(app, wallet)
 def risk(risk_amount):
 
   transfer = bitcoin_transfer_dict(request)
+
   if transfer:
     # The user has made the payment request
-    print(transfer)
+    if risk_amount > MAX_RISK_AMOUNT:
+      error_string = 'Risk amount must be less than {:d}'.format(MAX_RISK_AMOUNT)
+      raise InvalidUsage(error_string, status_code=400)
+
+    if risk_amount < MIN_RISK_AMOUNT:
+      error_string = 'Risk amount must be more than {:d}'.format(MIN_RISK_AMOUNT)
+      raise InvalidUsage(error_string, status_code=400)
+
+    if RiskEngine().run():
+      # Client won, send bits
+      reward_amount = reward(risk_amount)
+      send_bittransfer(username, reward_amount)
+      return winner_message(username, reward_amount)
+    else:
+      # Client lost, return message
+      return loser_message(username, risk_amount)
+
   else:
     # Return a 402 so user can request with payment
     return payment_required_response(risk_amount)
-
-  if risk_amount > MAX_RISK_AMOUNT:
-    error_string = 'Risk amount must be less than {:d}'.format(MAX_RISK_AMOUNT)
-    raise InvalidUsage(error_string, status_code=400)
-
-  if risk_amount < MIN_RISK_AMOUNT:
-    error_string = 'Risk amount must be more than {:d}'.format(MIN_RISK_AMOUNT)
-    raise InvalidUsage(error_string, status_code=400)
-
-  if RiskEngine().run():
-    # Client won, send bits
-    reward_amount = reward(risk_amount)
-    send_bittransfer(username, reward_amount)
-    return winner_message(username, reward_amount)
-  else:
-    # Client lost, return message
-    return loser_message(username, risk_amount)
 
 def payment_required_response(amount):
   resp = Response('Payment Required')
