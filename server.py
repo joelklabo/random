@@ -10,7 +10,7 @@ from two1.lib.wallet import Wallet
 from two1.lib.bitserv.flask import Payment
 from two1tools.two1tools.bittransfer import *
 
-PORT = 5000
+PORT = 5001
 MAX_RISK_AMOUNT = 1000
 MIN_RISK_AMOUNT = 10
 
