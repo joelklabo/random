@@ -24,7 +24,8 @@ payment = Payment(app, wallet)
 @app.route('/risk/<int:risk_amount>')
 def risk(risk_amount):
 
-  if transfer = bitcoin_transfer_dict(request):
+  transfer = bitcoin_transfer_dict(request)
+  if transfer:
     # The user has made the payment request
     print(transfer)
   else:
