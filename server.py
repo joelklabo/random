@@ -42,10 +42,10 @@ def risk(risk_amount):
     return loser_message(username, risk_amount)
 
 def winner_message(user, reward):
-  return 'Congratulations {0} you won {:d} satoshis!'.format(user, reward)
+  return 'Congratulations {0} you won {0} satoshis!'.format(user, reward)
 
-def loser_mesage(user, risk):
-  return 'Sorry {0}, you lost [:d}. Try again!'.format(user, risk)
+def loser_message(user, risk):
+  return 'Sorry {0}, you lost {0}. Try again!'.format(user, risk)
 
 def reward(risk):
   return risk * 2
@@ -57,4 +57,5 @@ def handle_invalid_usage(error):
   return response
 
 if __name__ == '__main__':
+  app.debug = True
   app.run(host='0.0.0.0', port=PORT)
