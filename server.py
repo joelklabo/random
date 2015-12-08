@@ -11,8 +11,11 @@ from two1.lib.bitserv.flask import Payment
 from two1.commands.config import Config
 
 from two1.lib.util import zerotier 
+from two1tools.two1tools.bittransfer import *
+
 
 PORT = 5001
+DEFAULT_RISK_AMOUNT = 100
 MAX_RISK_AMOUNT = 1000
 MIN_RISK_AMOUNT = 10
 
@@ -21,8 +24,19 @@ app = Flask(__name__)
 wallet = Wallet()
 payment = Payment(app, wallet)
 
+@app.route('/risk')
+@payment.required(DEFAULT_RISK_AMOUNT)
+def risk():
+  if RiskEngine().run():
+    reward_amount = reward(DEFAULT_RISK_AMOUNT)
+    payee_username = bitcoin_transfer_dict(request)['payer']
+    send_bittransfer(payee_username, reward_amount)
+    return winner_message(payee_username, reward_amount)
+  else:
+    return loser_message(payee_username, DEFAULT_RISK_AMOUNT)
+
 @app.route('/risk/<int:risk_amount>')
-def risk(risk_amount):
+def risk_amount(risk_amount):
 
   transfer = bitcoin_transfer_dict(request)
 
