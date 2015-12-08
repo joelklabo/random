@@ -83,7 +83,7 @@ def bitcoin_transfer_dict(request):
   return Objectifier(request.headers.get('Bitcoin-Transfer'))
 
 def winner_message(user, reward):
-  return 'Congratulations {0} you won {0} satoshis!'.format(user, reward)
+  return 'Congratulations {0} you won {1} satoshis!'.format(user, reward)
 
 def loser_message(risk):
   return 'Sorry, you lost {0}. Try again!'.format(risk)
