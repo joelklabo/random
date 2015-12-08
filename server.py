@@ -86,7 +86,7 @@ def winner_message(user, reward):
   return 'Congratulations {0} you won {1} satoshis!'.format(user, reward)
 
 def loser_message(risk):
-  return 'Sorry, you lost {0}. Try again!'.format(risk)
+  return 'Sorry, you lost {0} satoshis. Try again!'.format(risk)
 
 def reward(risk):
   return risk * 2
