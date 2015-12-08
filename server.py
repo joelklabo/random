@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
 from flask import Flask, Response 
-from flask import request, jsonify
+from flask import request
 from risk_engine import RiskEngine
 from invalid_usage import InvalidUsage
+from objectifier import Objectifier
 
 # Import from the 21 Bitcoin Develper Library
 from two1.lib.wallet import Wallet
@@ -79,7 +80,7 @@ def payment_server_address():
   return 'http://{0}:{1}/payment'.format(ip, PORT) 
 
 def bitcoin_transfer_dict(request):
-  return jsonify(request.headers.get('Bitcoin-Transfer'))
+  return Objectifier(request.headers.get('Bitcoin-Transfer'))
 
 def winner_message(user, reward):
   return 'Congratulations {0} you won {0} satoshis!'.format(user, reward)
