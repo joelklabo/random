@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from flask import Flask, Response
+from flask import Flask, Response, request
 from risk_engine import RiskEngine
 from objectifier import Objectifier
 
