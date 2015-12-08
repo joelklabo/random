@@ -18,6 +18,19 @@ app = Flask(__name__)
 wallet = Wallet()
 payment = Payment(app, wallet)
 
+@app.route('/')
+def info():
+  return 'Play Risk! Bet 100 Satoshis. 49% Chance to double your money!'
+
+@app.route('/info')
+def get_info():
+  info = {"name": "Risk"}
+  body = json.dumps(info)
+  return (body, 200, {
+   'Content-length': len(body),
+   'Content-type': 'application/json'
+  })
+
 @app.route('/risk')
 @payment.required(DEFAULT_RISK_AMOUNT)
 def risk():
