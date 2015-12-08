@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from flask import Flask, Response 
-from flask import request
+from flask import request, jsonify
 from risk_engine import RiskEngine
 from invalid_usage import InvalidUsage
 
@@ -29,11 +29,12 @@ payment = Payment(app, wallet)
 def risk():
   if RiskEngine().run():
     reward_amount = reward(DEFAULT_RISK_AMOUNT)
-    payee_username = bitcoin_transfer_dict(request)['payer']
+    transfer_dictionary = bitcoin_transfer_dict(request)
+    payee_username = transfer_dictionary['payer']
     send_bittransfer(payee_username, reward_amount)
     return winner_message(payee_username, reward_amount)
   else:
-    return loser_message(payee_username, DEFAULT_RISK_AMOUNT)
+    return loser_message(DEFAULT_RISK_AMOUNT)
 
 @app.route('/risk/<int:risk_amount>')
 def risk_amount(risk_amount):
@@ -57,13 +58,13 @@ def risk_amount(risk_amount):
       return winner_message(username, reward_amount)
     else:
       # Client lost, return message
-      return loser_message(username, risk_amount)
+      return loser_message(risk_amount)
 
   else:
     # Return a 402 so user can request with payment
     return payment_required_response(risk_amount)
 
-def payment_required_response(amount):
+def payment_required_response(amount, request):
   resp = Response('Payment Required')
   resp.status_code = 402
   resp.headers['Bitcoin-Micropayment-Server'] = payment_server_address() 
@@ -78,13 +79,13 @@ def payment_server_address():
   return 'http://{0}:{1}/payment'.format(ip, PORT) 
 
 def bitcoin_transfer_dict(request):
-  transfer = request.headers.get('Bitcoin-Transfer')
+  return jsonify(request.headers.get('Bitcoin-Transfer'))
 
 def winner_message(user, reward):
   return 'Congratulations {0} you won {0} satoshis!'.format(user, reward)
 
-def loser_message(user, risk):
-  return 'Sorry {0}, you lost {0}. Try again!'.format(user, risk)
+def loser_message(risk):
+  return 'Sorry, you lost {0}. Try again!'.format(risk)
 
 def reward(risk):
   return risk * 2
