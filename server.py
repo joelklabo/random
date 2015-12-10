@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 
 from flask import Flask, Response, request
+from flask.ext.responses import json_response
 from risk_engine import RiskEngine
 from objectifier import Objectifier
-
 from two1.lib.wallet import Wallet
 from two1.lib.bitserv.flask import Payment
-
 from two1tools.two1tools.bittransfer import *
+from cfgtodict import ConfigToDictionary
 
 
 PORT = 5001
@@ -18,18 +18,13 @@ app = Flask(__name__)
 wallet = Wallet()
 payment = Payment(app, wallet)
 
-@app.route('/')
-def info():
-  return 'Play Risk! Bet 100 Satoshis. 49% Chance to double your money!'
+# Read in server info
+about = ConfigToDictionary('info.cfg').dict() 
 
+@app.route('/')
 @app.route('/info')
-def get_info():
-  info = {"name": "Risk"}
-  body = json.dumps(info)
-  return (body, 200, {
-   'Content-length': len(body),
-   'Content-type': 'application/json'
-  })
+def info():
+  return json_response(about)
 
 @app.route('/risk')
 @payment.required(DEFAULT_RISK_AMOUNT)
